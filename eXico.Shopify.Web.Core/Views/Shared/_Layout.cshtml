@@ -1,0 +1,36 @@
+﻿@inject IDbSettingsReader settings
+@inject Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine viewEngine
+<!DOCTYPE html>
+<html>
+<head>
+    <!--The default implementation is "Title - App Name"-->
+    @await Html.PartialAsync(this.GetViews().Meta.DefaultPageTitle)
+    <!--Includes default meta fields.It also calls _CustomMetaFields if available-->
+    @await Html.PartialAsync(this.GetViews().Meta.DefaultMetaFields)
+    <!--Renders the default css and js files. calls _CustomHeaderIncludes internally if available-->
+    @await Html.PartialAsync(this.GetViews().Meta.DefaultHeaderIncludes)
+    <!--Quick css rendering-->
+    @RenderSection(ViewNames.STYLE_SECTION, required: false)
+
+</head>
+<body>
+    <div class="container body-content" @this.PrintViewNameAttr()>
+        @await Html.PartialAsync(this.GetViews().NavBar.NavBar)
+        <div class="row">
+            @await Html.PartialAsync(this.GetViews().WebMsg.DefaultWebMsgLoader)
+        </div>
+        <div class="row">
+            @RenderBody()
+        </div>
+        <div class="row">
+            @await Html.PartialAsync(this.GetViews().Footer.DefaultFooter)
+        </div>
+    </div>
+    <!--This will load default elements that are to be added on every page at the end of the body for all pages.
+        Calls _CustomAfterBodyIncludes internally-->
+    @await Html.PartialAsync(this.GetViews().Meta.DefaultAfterBodyIncludes)
+
+    <!--Quick script include-->
+    @RenderSection(ViewNames.SCRIPT_SECTION, required: false)
+</body>
+</html>
